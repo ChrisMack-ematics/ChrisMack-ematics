@@ -1,0 +1,252 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,multirow,enumitem,url,graphicx}
+\usepackage[backend=biber,sorting=ynt]{biblatex}
+\usepackage[margin=1in]{geometry}
+\addbibresource{references.bib}
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{thm}[lem]{Theorem}
+\newtheorem{cor}[lem]{Corollary}
+\newtheorem{prop}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{ex}{Example}[section]
+\newtheorem{defn}{Definition}[section]
+\newtheorem{rmk}{Remark}
+
+\title{Choosing Bases with Zorn}
+\author{Christopher Mack}
+\date{Winter 2021}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+    Given a finite collection of non-empty sets, one can usually define and apply a choice function in order to construct a new set that has at least one element from every set within the collection. The axiom of choice asserts that such a choice function always exists, which is especially helpful when the collection is infinite in size. Although this might seem intuitively obvious, the axiom of choice can be used to prove many counter-intuitive and arguably paradoxical statements. Further, it allows us to assume the existence of objects that are not necessarily quantifiable, such as bases for infinitely-dimensional vector spaces. In fact, the axiom of choice is equivalent to the claim that every vector space has a basis. For these and other reasons, Ernst Zemelo was met with resistance and controversy when he formalized the axiom of choice in 1904. Even so, the axiom is logically equivalent to many widely-accepted and fundamental theorems of Set Theory.
+\end{abstract}
+\section{Introduction}
+Given any collection of non-empty sets, you can create a new set containing one member from each of the sets within the collection. At first, this statement seems clear, perhaps intuitive. In most cases, the existence of such a set is clear. For example, if you have a collection of pairs of shoes, for example, you can easily take the left shoe from each pair to create a collection of shoes for the left foot. Before Ernst Zemelo formulated the axiom of choice in 1904, mathematicians would implicitly invoke the axiom. In other words, they would assume the existence of a set consisting of elements within members of some collection, which at times was improvable without the axiom of choice.
+
+While the axiom of choice has far-reaching implications in mathematics, my research is centered around a specific application in the field of Algebra. When studying a vector space, an important question to ask is, what is its basis? A \textit{basis} $\beta$ of a space $V$ is a set of linearly independent vectors such that, for any $\Vec{v} \in V$, $v$ can be written as a linear combination of the members of $\beta$. Using a basis, one can make powerful statements regarding the structure of the space it spans, as well as the relationship between any two or more vectors within it. 
+
+Thankfully, the bases of most finite-dimensional vector spaces are relatively easily constructed, and their existence is obvious. The same cannot be said, though, for spaces of infinite cardinality. Consider an infinite-dimensional variant of the Hilbert Space: the space of periodic $\mathcal{L}^2$ functions $f$ defined on a close interval, with the an inner product. It turns out that for this space, like every Hilbert space, one can define an orthonormal basis, with infinitely many vectors. By definition, each $\mathcal{L}^2$ function can be expanded as a series in terms of this orthonormal basis. Interestingly, every such function has a Fourier Series expansion relating to these orthonormal vectors. The purpose of this example is to show that being able to assume the existence of a basis for infinitely dimensional vector spaces can have powerful implications. 
+
+
+%Consider $\mathbb{R}^n$ as a vector space over $\mathbb{R}$, call this space $V$. As with many finite-dimensional vector spaces, its basis is relatively easy to construct: for any $\Vec{x} \in V$, $x = (a_1,a_2,...,a_n)$ where $\{a_1,a_2,...,a_n\} \subseteq \mathbb{R}$. Since $a_i = a_i \cdot 1$, we can define a basis $\beta = \{(1,0,...,0), (0,1,0,...0),...,(0,0,...,1)\}$ such that $v_i \in \beta$ has $1$ in its $i^{th}$ coordinate, and $0$ elsewhere. Further, $|\beta| = n$, which is what allows us to 
+
+In the example above, we are able to explicitly define a basis. As this is not always the case, let us consider another example of a vector space that does not have finite dimension. It is well-known that $\mathbb{R}$ as a vector space over $\mathbb{Q}$ is infinitely dimensional. Further, because $\mathbb{R}$ is uncountable, there is no countable basis for the vector space $\mathbb{R}$ over $\mathbb{Q}$. This property makes it impossible to define a set of linearly independent vectors that spans the space. In spite of this, the axiom of choice allows us to assume the existence of a basis for these spaces, even if we cannot actually write it down. In fact, in section 4 we will show that the axiom of choice implies and is implied by the claim that every vector space has a basis.
+
+ Bases of infinitely-dimension vector spaces is just one example of how the axiom of choice can be invoked to assume the existence of objects that are not quantifiable. While this is one of many reasons that Zemelo was met with resistance in the mathematical community at the time it was formalized, these concerns have since been addressed to a general satisfaction. Consequently, the axiom of choice has found its place in the standard form of axiomatic set theory which is known as Zemelo-Fraenkel set theory (ZF without the axiom of choice, ZFC including it). One such argument for the inclusion of the axiom of choice is that, as discussed in section 3, it is logically equivalent to several statements that are fundamental to ZF set theory.
+ 
+ %In this paper, we will see how even though the axiom of choice can lead to controversial conclusions, it is logically equivalent to several statements of ZF that are fundamental to mathematics today. Using these statements, we will then prove that the axiom of choice is equivalent to an accepted claim in Algebra: every vector space has a basis.
+
+\section{The Axiom of Choice and Other Definitions}
+Before discussing equivalents of the Axiom of Choice, we provide the reader with necessary definitions. We start with a formal definition of the Axiom of Choice whose wording makes it easily applicable for later proofs.
+
+\begin{thm}[Axiom of Choice] \label{aoc}
+Let $X$ be a collection of non-empty sets. Then there exists a function $f$ such that $f(A) \in A$ for each $A \in X$
+\end{thm}
+
+We call $f$ a \textit{choice function}, the existence of which is sometimes easily seen. Consider the following example.
+\begin{ex}
+Let $X = \{\{3,9,4\},\{53,17,25\},\{101,201,301\}\}$. An obvious choice function would be ``choose the least element", with the set $\{3,17,101\}$ as the result.
+\end{ex}
+But what if we considered an infinite collection of subsets of $\mathbb{N}$? While this collection is infinite in size, we can always find a least element of any finite subset of $\mathbb{N}$. Not every set has this nice property, though, which is defined next.
+
+\begin{defn}[Well-Ordering]
+An ordering $\leq$ on a set $S$ is a \textit{well-ordering} on $S$ if every non-empty $X \subseteq S$ has a least element in the ordering $\leq$.
+\end{defn}
+
+\begin{ex}
+Let $X$ be the power set of $\mathbb{R}$. Since $X$ of course contains open sets, we cannot choose $f$ to be the same as in Example 2.1; $\leq$ is not a well-ordering on $X$. In fact, no choice function that can be applied infinitely to all the member of $X$ is known to exist. In this example, the Axiom of Choice is needed to assert the existence of such a function.
+\end{ex}
+
+We will also need to be familiar with other kinds of orderings before proceeding.
+
+\begin{defn}[Partial \& Linear Orderings]
+We say that $\leq$ is a \textit{partial ordering} on a set $X$ if, for $x_1,x_2,x_3 \in X$, the following three properties are satisfied:
+\begin{enumerate}
+    \item $x_1 \leq x_2 \text{ and } x_2 \leq x_1 \implies x_1 = x_2$
+    \item $x_1 \leq x_2 \leq x_3 \implies x_1 \leq x_3$
+    \item $x_1 \leq x_1$
+\end{enumerate}
+Moreover, let $\leq$ be a partial ordering on a set $X$. Then $\leq$ is a \textit{total ordering} if for all $x_1,x_2 \in X$, we have that $x_1 \leq x_2$ or $x_2 \leq x_1$.
+\end{defn}
+
+Now, we can define a term that will be applied in proofs in Section 3 and Section 4.
+\begin{defn}[Chain]
+Let $X$ be a subset of a partially ordered set $S$ under $<$. $X$ is a \textit{chain} in $S$ if $X$ is totally ordered by $<$.
+\end{defn}
+
+\begin{ex}
+Let $P(\mathbb{N})$ denote the power set of $\mathbb{N}$, and define $X$ as follows:
+\[
+X = {\{1\},\{1,2\},\{1,2,3\},...,\{1,2,...,n\}}
+\]
+Then $X$ is a chain in $P(\mathbb{N})$.
+\end{ex}
+
+\section{Axiom of Choice Equivalents}
+Now that we have introduced the necessary background and definitions, we can state theorems and lemmas that are important to proving the main result of this paper. The first of which, the Axiom of Multiple Choice, is an equivalence we take for granted. A proof of this is given by Thomas Jech (see [2], chapter 9).
+
+\begin{thm}[Axiom of Multiple Choice]
+Let $A$ be a family of sets. Then there exists a function $f$ such that for every $A' \in A$, $f(A')$ is a finite non-empty subset of $A'$.
+\end{thm}
+
+This next lemma is foundational to set theory, and will be essential to prove that the axiom of choice implies that every vector space has a basis.
+
+\begin{thm}[Zorn's Lemma] \label{zorns}
+If $A$ is a non-empty, partially ordered set such that every subset of $A$ has an upper bound under the partial ordering, then $A$ contains at least one maximal element.
+\end{thm}
+
+Note that $M$ is an \textit{upper bound} of a set $A$ if, for all $a \in A$, $a \leq M$. Also, suppose that $x \in A$ is a \textit{maximal element} of $A$. Then, if $x \leq a$ for some $a \in A$, then $x = a$.
+
+
+\begin{thm}[Well-Ordering Principle]
+Every set can be well-ordered.
+\end{thm}
+
+ Before stating Tukey's Lemma, we provide the following definition.
+
+\begin{defn}[Finite Character]
+Let $F$ be a collection of sets. $F$ has \textit{finite character} if for each set $X$, we have that $X \in F$ if and only if every finite subset of $X$ is in $F$.
+\end{defn}
+
+\begin{thm}[Tukey's Lemma]
+Let $F$ be a non-empty family of sets. If $F$ has finite character, then $F$ has a maximal element with respect to inclusion $\subseteq$.
+\end{thm}
+
+In order to prove the main result of this paper, we will show that the above statements are equivalent to each other and the Axiom of Choice. Before doing so, though, we must introduce the process of transfinite recursion, a proof of which is available in [4].
+
+\begin{lem}[Transfinite Recursion]
+Let $V$ be the class of all sets, and let $Ord$ be the class of all ordinals. Given a function $F: V \rightarrow V$, there exists a function $G: Ord \rightarrow V$ such that if we define $a_{\alpha} := G(\alpha)$, then for each $\alpha$, $a_{\alpha} = F(\langle a_{\xi} : \xi < \alpha \rangle )$.
+\end{lem}
+
+We now prove the following theorem [2].
+
+\begin{thm} \label{equivalences}
+The following are equivalent:
+\begin{enumerate}[label = \roman*)]
+    \item Axiom of Choice
+    \item Well-Ordering Principle
+    \item Zorn's Lemma
+    \item Tukey's Lemma
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+(i) $\implies$ (ii) : Let $S$ be a set, and let $F$ be a choice function applied to all non-empty subsets of $S$. We need to invoke the Axiom of Choice to show that $S$ is well-ordered. This is equivalent to finding an ordinal number $\alpha$ such that the sequence
+\begin{center}
+$\{a_0,a_1,...,a_\xi,...\}$ 
+\end{center}
+is a one-to-one enumeration of the set $S$, where $\xi < \alpha$. \\
+By applying the choice function $F$, we can construct such a sequence by transfinite recursion. So we define the first term of the sequence: 
+\begin{center}
+$a_0 = F(S)$
+\end{center} 
+For each subsequent term in the sequence, we define 
+\begin{center}
+$a_\xi = F(S - \{a_\eta : \eta < \xi\})$
+\end{center}
+By these definitions, the set entire set $S$ will eventually be contained in $\{a_0,...,a_\xi,...\}$ which is a well-ordering. \\
+\\
+(ii)$\implies$(iii) : Let $S$ be a partially-ordered set such that every chain in $S$ has an upper bound. Further, by (ii), $S$ can be well-ordered. Thus, for some ordinal $\alpha$ there exists an enumeration
+\begin{center}
+    $S = (s_0,s_1,...,s_\xi,...)$
+\end{center}
+where $\xi < \alpha$. Note that $s_0$ represents the least element of $S$. Through transfinite recursion, we can define a new set $C$ whose least element is 
+\begin{center}
+    $c_0=s_0$
+\end{center} 
+For every subsequent member of $C$, define
+\begin{center}
+    $c_\xi = s_\gamma$
+\end{center}
+where $\xi > 0$. So,
+\begin{center}
+    $C = \{c_\eta : \eta < \xi\}$
+\end{center}
+Note that $s_\gamma \notin C$ and $s_\gamma$ is clearly an upper bound of $C$, and exists unless $c_{\xi-1}$ is a maximal element of $S$. Since the chain $C$ also always exists, there will always be a maximal element of $S$. \\
+\\
+(iii)$\implies$(iv) : Let $A$ be a non-empty collection of sets such that $A$ has finite character. We know that $F$ is partially ordered by $\subseteq$. Now consider some chain $C$ in $A$, and define $B = \bigcup\{X : X \in C\}$. Note that if $B'$ is a finite subset of $B$, then $B' \in A$. Thus $B$ is in $A$. Further, $B$ is an upper bound of $A$. So, every finite subset of $A$ has an upper bound, and by Zorn's lemma, there must exist a maximal element of $A$. \\
+\\
+(iv)$\implies$(i) : Let $A$ be a collection of non-empty sets. We want to invoke Tukey's lemma to prove the existence of a choice function on $A$. Define a new family
+\begin{center}
+$B = \{f: f $ is a choice function on some $C \subseteq A\}$
+\end{center}
+We can see that $B$ has finite character since a subset of a choice function is a choice function, and thus we can apply Tukey's lemma and say that $B$ has a maximal element. Call it $M$. Since $M$ is the maximal element, we attain equality in the containment $C \subseteq A$, and thus $M$ is a choice function on $A$.
+\end{proof}
+We can now use Theorem 3.6 in the last section of this paper.
+
+\section{Every Vector Space has a Basis if and only if the Axiom of Choice}
+
+In this section we will prove the equivalence of the statement that every vector space has a basis, and the axiom of choice.
+
+First, we need formal definitions for vector spaces, bases and spanning sets:
+\begin{defn}[Vector Space] \label{vs}
+A set $V$ that is closed under finite vector addition and scalar multiplication over a field $F$ is called a \textit{vector space}.
+\end{defn}
+
+\begin{defn}[Spanning Set]
+A set $S=\{s_1,s_2,...,s_i,...,s_n\}$ is a \textit{spanning set} for a vector space $V$ if, for every $\Vec{v} \in V$, there exist scalars $a_1,a_2,...,a_i,...,a_n$ in $F$ such that {$\displaystyle \Vec{v} = \sum_{i=1}^na_is_i$}.
+\end{defn}
+
+Next, we provide a definition for a very special kind of spanning set, the size of which is equal to the dimension of the vector space that it spans, in the finite case. 
+
+\begin{defn}[Basis]
+A set $B$ is a \textit{basis} of a vector space $V$ if all members of $B$ are linearly independent, and $span\{B\} = V$.
+\end{defn}
+\begin{rmk}
+Let $V$ be a vector space with a basis $B$ and a spanning set $S$. Then $|B| \leq |S|$.
+\end{rmk}
+
+We prove the following Lemma [3].
+\begin{lem} \label{aoc imp basis}
+Every vector space has a basis is deducible from the Axiom of Choice.
+\end{lem}
+\begin{proof}
+Take $V$ to be any vector space of any size, finite or infinite. Define $A$ to be the collection of all linearly independent subsets of $V$. We can assume $A$ to be non-empty, otherwise $V$ is the trivial space. Further, we know that $A$ is partially ordered such that 
+\begin{center}
+    $(\forall X,Y \in A) (X \subseteq Y) \vee (Y \subseteq X)$
+\end{center} 
+Then by Zorn's Lemma, there exists a maximal element of $A$, call it $B$. By definition of a basis, $B$ is a basis of $V$. Since Zorn's Lemma is logically equivalent to the Axiom of Choice, Lemma \ref{aoc imp basis} is proven.
+\end{proof}
+
+It is worth noting that Lemma \ref{aoc imp basis} can be similarly proven using Tukey's Lemma in place of Zorn's. This relationship has been known for some time, but the proof of the following Lemma was founded in 1984. Before it is proven here, we introduce another definition:
+\begin{defn}[i-homogeneous] \label{i-homo}
+Take $f$ to be a rational function. Then $f$ is said to be i-homogeneous of degree $d$ if all monomials in its numerator have the same i-degree $n$, and all monomials in the denominator have i-degree $n+d$.
+\end{defn}
+
+We now prove the near converse Lemma \ref{aoc imp basis} [3].
+
+\begin{lem} \label{basis imp aoc}
+Every vector space has a basis implies the axiom of multiple choice.
+\end{lem}
+\begin{proof}
+We define $\{X_i : i \in I\}$ to be a collection of non-empty sets such that $X_i \bigcap X_j = \emptyset$ when $i\neq j$. Then, define $X = \bigcup_{i \in I}X_i$. Then the field $k(X)$ is obtained by adjoining all elements of $X$ to some field $k$. \\
+Now define the i-degree of a monomial to be the sum of the exponents of elements of $X_i$ in the monomial. Applying Definition \ref{i-homo}, we collect all rational functions that are i-homogeneous of degree 0. This collection creates a subfield $K$ of $k(X)$, which by Definition \ref{vs} implies that $k(X)$ is a vector space over this new field $K$. We define $V$ to be the subspace spanned by $X$. By our assumption that every vector space has a basis, we know that a basis of the $K$-vector space $V$ exists, call it $B$. We denote $b$ to be the members of $B$. \\
+Take any $x \in X_i$. By the definition of a basis, we can represent $x$ as a finite  $K$-linear combination of elements of $B$:
+\begin{align}
+    x &= \sum_{b \in B(x)}\alpha_b(x) \cdot b
+\end{align}
+Where $B(x)$ is a finite subset of $B$ so that $\alpha_b(x)$ is nonzero. Now, take $y \in X_i$ which may or may not be equivalent to $x$. Similarly, 
+\begin{align}
+    y &= \sum_{b \in B(y)} \alpha_b(y) \cdot b
+\end{align}
+Now consider that $\frac{y}{x} \in K$. Then we can multiply equation (1) by $\frac{y}{x}$ to obtain
+\begin{align}
+    y &= \sum_{b \in B(x)} \frac{y}{x} \cdot \alpha_b(x) \cdot b
+\end{align}
+By equations (2) and (3), and the fact that $B$ is a basis, we have that $B(x) = B(y)$. Further, ${\displaystyle \alpha_b(y) = \frac{y}{x}\alpha_b(x)}$. \\
+Therefore, we see that $B(x)$ and $\frac{\alpha_b(x)}{x}$ do not depend on the $x \in X_i$, and instead on the subset from which $x$ is taken, in other words, the $i$. Thus $B(x)$ is more appropriately denoted $B_i$, and we similarly replace ${ \displaystyle \frac{\alpha_b(x)}{x} }$ with $\beta_{bi}$.\\
+Since $\alpha_b(x) \in K$, we see that $\beta_{bi}$ is i-homogeneous of degree -1, and thus if we were to write $\beta_{bi}$ as a quotient of polynomials in reduced form, we would see that some variables from $X_i$ would occur in the denominator. Finally, define $F_i$ to be the set of all such variables that occur in the denominator of $\beta_{bi}$ for some $b \in B$. Then $F_i$ is a non-empty, finite subset of $X_i$.
+\end{proof}
+Since the equivalence of the Axiom of Multiple Choice and the Axiom of Choice has already been proven [2], we can, in conjunction with Lemma \ref{aoc imp basis}, state our final theorem:
+
+\begin{thm}
+The Axiom of Choice is equivalent to the claim that every vector space has a basis.
+\end{thm}
+
+In this paper, we have examined just one application of the axiom of choice, which, despite its controversial origin and counter-intuitive implications, is among the most fundamental statements of set theory. 
+
+\nocite{*}
+\printbibliography
+\end{document}
