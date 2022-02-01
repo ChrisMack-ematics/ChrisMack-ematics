@@ -1,0 +1,1478 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,dsfont,amssymb,amsthm,multirow,enumitem,url,graphicx,dirtytalk}
+\usepackage[margin=0.5in]{geometry}
+
+\title{537 : Final}
+\author{Christopher Mack}
+\date{Fall 2021}
+
+\begin{document}
+\newcommand{\e}{\epsilon}
+\newcommand{\summ}[2]{\sum_{n = #1}^{\infty}#2}
+\maketitle
+
+\section*{Problem 1}
+Consider the following ODE:
+\begin{align}
+    xy'' - y' + 4x^3y = 0
+\end{align}
+\subsection*{Part (a)}
+Show that $x = 0$ is a regular singular point, find the indicial equation and recurrence
+relations, and determine the two linearly independent solutions. Briefly explain whether or not this example requires a logarithmic element for the second solution, i.e., provide some justification for which case in the method of Frobenius you are using and some specifics about the case for this example. Determine expressions for the coefficients for these two solutions.
+
+To show that $x = 0$ is a singular point of (1), we define
+
+\begin{align*}
+    P(x) = x, \hspace{2cm} Q(x) = -1, \hspace{2cm} R(x) = 4x^3
+\end{align*}
+
+Since $P(0) = 0$, we know that $x = 0$ is a singular point of (1). We compute
+\begin{align*}
+    \lim_{x \rightarrow 0}x \cdot \frac{Q(x)}{P(x)} &= \lim_{x \rightarrow 0}x \cdot \frac{-1}{x} \\
+    &= \lim_{x \rightarrow 0}-x \\
+    &= 0
+\intertext{and,}
+    \lim_{x \rightarrow 0}x^2 \cdot \frac{R(x)}{P(x)} &= \lim_{x \rightarrow 0}x^2 \cdot \frac{4x^3}{x} \\
+    &= \lim_{x \rightarrow 0} 4 \\
+    &= 4
+\end{align*}
+
+Since $f(x) = 0$ and $g(x) = 4$ are clearly analytical functions, we know that $x = 0$ is a regular single point of (1). Thus, we can employ the method of Froebenius to solve (1). \\
+
+We try a solution of the form 
+\[
+ y(x) = \summ{0}{a_nx^{n+r}}
+\]
+so that the derivatives are defined
+\begin{align*}
+y'(x) &= \summ{0}{a_n(n+r)x^{n+r-1}} \\
+y''(x) &=  \summ{0}{a_n(n+r)(n+r-1)x^{n+r-2}}
+\end{align*}
+
+Subbing these into (1) yields
+
+\begin{align*}
+    x \summ{0}{a_n(n+r)(n+r-1)x^{n+r-2}} - \summ{0}{a_n(n+r)x^{n+r-1}} + 4x^3 \summ{0}{a_nx^{n+r}} &= 0 \\
+    \summ{0}{a_n(n+r)(n+r-1)x^{n+r-1}} - \summ{0}{a_n(n+r)x^{n+r-1}} + 4\summ{0}{a_nx^{n+r+3}} &= 0 \\
+    \summ{0}{a_n(n+r)(n+r-1)x^{n+r-1}} - \summ{0}{a_n(n+r)x^{n+r-1}} + 4\summ{4}{a_{n-4}x^{n+r-1}} &= 0 \\
+\end{align*}
+
+Now we can find the inidicial equation for $n = 0$, by restricting $a_0$ as arbitrary:
+\begin{align*}
+    a_0x^{r-1}[r(r-1) - r] &= 0 \\
+    r^2 - 2r &= 0 \\
+    r(r - 2) &= 0 \\
+\end{align*}
+
+Let $r_1$ and $r_2$ be the solutions to the indicial equation, such that $r_1 = 2$ and $r_2 = 0$. Thus we have two roots that differ by an integer. \\
+
+For our first solution, we examine the case that $r_1 = 2$. \\
+
+For $n = 1$, we have that
+\begin{align*}
+    a_1x^{2}[(1 + 2)(2) - 3] &= 0 \\
+    \implies a_1 &= 0
+\end{align*}
+
+For $n = 2$,
+\begin{align*}
+     a_2x^{2}[(2 + 2)(3) - 4] &= 0 \\
+    \implies a_2 &= 0
+\end{align*}
+
+And finally for $n = 3$,
+\begin{align*}
+     a_3x^{2}[(3 + 2)(5) - 5] &= 0 \\
+    \implies a_3 &= 0
+\end{align*}
+
+Now letting $a_n \geq 4$ we can find our recurrence relation:
+\begin{align*}
+    a_nx^{n+r-1}[(n+r)(n+r-1) - (n+r)] + 4a_{n-4} &= 0 \\
+    a_n[(n+r)(n+r-2)] + 4a_{n-4} &= 0 \\
+    a_n(r) &= -4\frac{a_{n-4}}{(n+r)(n+r-2)}
+\end{align*}
+
+And so for $r = r_1 = 2$,
+\begin{align*}
+    a_n = -4\frac{a_{n-4}}{n(n+2)}
+\end{align*}
+We can now compute the first few (non-zero) coefficients, with $a_0$ being arbitrary.
+\begin{align*}
+    a_4 &= -4\frac{a_0}{4 \cdot 6} = -\frac{a_0}{3!}  \\
+    a_8 &= -4\frac{a_4}{8\cdot10} = 4^2\frac{a_0}{10\cdot8\cdot6\cdot4} = (4^2 \cdot 2)\frac{a_0}{(10)!!} = \frac{a_0}{5!} \\
+    a_{12} &= -4\frac{a_8}{12\cdot14} = -4^3 \frac{a_0}{14\cdot12\cdot10\cdot8\cdot6\cdot4} = -(4^3 \cdot 2) \frac{a_0}{(14)!!} = -\frac{a_0}{7!}
+\end{align*}
+
+Which is easily recognizable as the coefficient of the expansion of $\sin(x)$, and so we can write the general expression for the non-zero coefficients:
+\begin{align*}
+    a_{4n} = \frac{a_0(-1)^n}{(2n+1)!}
+\end{align*}
+
+which gives our first solution
+\begin{align}
+    y_1(x) &= \sum_{n = 0}^{\infty}\frac{a_0(-1)^n}{(2n+1)!}x^{4n} \nonumber \\
+           &= a_0 \sin(x^2) \label{eq1}
+\end{align}
+
+For the second solution, we need to find if we need to include the logarithmic term
+\begin{align*}
+    \lim_{r \rightarrow 0}a_2(r) = -4\frac{0}{(2+r)(r)} \\
+    &= 0
+\end{align*}
+
+Since the above limit exists, the log term is not present in the second solution. So we follow a similar process as above, by considering a linearly independent of the form
+\begin{align*}
+    y_2(x) = \summ{0}{b_nx^{n+r_2}}
+\end{align*}
+So that (1) becomes
+
+\begin{align*}
+    \summ{0}{b_n(n+r)(n+r-1)x^{n+r-1}} - \summ{0}{b_n(n+r)x^{n+r-1}} + 4\summ{4}{b_{n-4}x^{n+r-1}} &= 0
+\end{align*}
+
+Thus $n = 1$ and $n = 3$ shows that, for $r = r_2 = 0$
+\begin{align*}
+    b_1 = b_3 = 0
+\end{align*}
+
+while for $n = 2$, we get
+
+\begin{align*}
+    b_2(2)(1) - b_2(2) &= 0 \\
+    \implies 0 &= 0
+\end{align*}
+thus $b_2$ is arbitrary. However, it generates the $y_1(x)$ solution above, so we take $b_2 = 0$. \\
+
+Of course, we have a similar recurrence relation to the first solution:
+
+\begin{align*}
+    b_n(r) &= -4\frac{b_{n-4}}{(n+r)(n+r-2)} \\
+    \implies b_n(r_2 = 0) &=  -4\frac{b_{n-4}}{n(n-2)}
+\end{align*}
+
+We again compute the first few non-zero terms of our second solution:
+
+\begin{align*}
+    b_4 &= -4\frac{b_0}{4\cdot2} = -\frac{b_0}{2!}\\
+    b_8 &= -4\frac{b_4}{8 \cdot 6} = 4^2\frac{b_0}{8 \cdot 6 \cdot 4 \cdot 2} = \frac{b_0}{4!} \\
+    b_{12} &= -4\frac{b_8}{12\cdot10} = -\frac{b_0}{6!} \\
+\end{align*}
+
+thus a general expression for the coefficients of the second solution is
+
+\begin{align*}
+    b_{4n} &= (-1)^n\frac{b_0}{(2n)!}
+\end{align*}
+
+so that our second solution can be written
+
+\begin{align}
+    y_2(x) &= \sum_{n = 0}^{\infty} (-1)^n\frac{b_0}{(2n)!}x^{4n} \nonumber \\
+            &= b_0 \cos(x^2) \label{eq1}
+\end{align}
+
+and our general solution for (1) is the sum of the two:
+\begin{align}
+    y(x) &= y_1(x) + y_2(x) \nonumber \\
+    y(x)     &= \sum_{n = 0}^{\infty}\frac{a_0(-1)^n}{(2n+1)!}x^{4n} + \sum_{n = 0}^{\infty} (-1)^n\frac{b_0}{(2n)!}x^{4n} \nonumber \\
+    y(x)     &= a_0 \sin(x^2) + b_0 \cos(x^2) \label{eq1}
+\end{align}
+
+\pagebreak
+
+\subsection*{part (b)}
+We first will rewrite (1) :
+\begin{align*}
+    y'' - \frac{1}{x}y' + 4x^2y = 0
+\end{align*}
+So that we can define
+\begin{align*}
+    p(x) = -\frac{1}{x}, \hspace{2cm} q(x) = 4x^2
+\end{align*}
+
+Since $y_1(0) = a_0 \neq 0$ from equation (2), we attempt a solution of the form $y(x) = v(x)y_1(x)$, where
+\begin{align}
+    \frac{dv}{dx} = \frac{1}{[y_1(x)]^2}\exp(-\int^xp(s)ds)
+\end{align}
+
+Computing $[y_1(x)]^2$:
+\begin{align*}
+    [y_1(x)]^2 &= a^2\sin^2(x^2) \\
+\end{align*}
+
+Now computing $\exp(-\int^xp(s)ds)$ :
+\begin{align*}
+    \exp(-\int^xp(s)ds) = \exp(\int^x\frac{1}{s}ds) = \exp(\ln(x)) = x
+\end{align*}
+
+Then (5) becomes
+
+\begin{align*}
+\frac{dv}{dx} &= \frac{x}{a^2sin^2(x^2)} \\ \implies
+\int dv &= \int \frac{x}{a^2sin^2(x^2)} dx \\
+\intertext{with the substitution $u = x^2$, so that $\frac{du}{2} = x dx$,}
+\int dv &= \frac{1}{2a^2} \int \frac{1}{sin^2(u)} du \\ \implies
+v(u) &= \frac{1}{a^2} \int \frac{1}{1 - cos(2u)} \\
+\intertext{from Matlab we have that}
+v(x) &= -\frac{\cot(x^2)}{2a^2}
+\end{align*}
+
+Thus our section solution as defined above can be written
+\begin{align}
+    y(x) &= -\frac{\cot(x^2)}{2a^2} \cdot a\sin(x^2) \nonumber \\
+         &= -\frac{\sin(x^2) \cdot \cos(x^2)}{2a \sin(x^2) } \nonumber \\
+         &= -\frac{\cos(x^2)}{2a} \label{eq1}
+\end{align}
+
+Note that equation (6) is equivalent to equation (4) for ${\displaystyle b_0 = -\frac{1}{2a_0}}$.
+
+\pagebreak
+
+\section*{Problem 2}
+
+\begin{align}
+    \epsilon y'' + 2y' + e^y = 0, \hspace{2cm} y(0) = 0, \hspace{2cm} y(1) = 0, \hspace{2cm} 0 < \epsilon \ll 1
+\end{align}
+
+\subsection*{Part (a)}
+Use singular perturbation methods to obtain a uniform approximation to the solution of the BVP (2). State clearly both the inner and outer solutions that you derived.
+
+To find the outer solution, we examine the case that $\epsilon = 0$ so that (7) becomes
+\begin{align*}
+    2y_o' &= -e^{y_o(x)} \\
+    e^{-y_0} dy_0 &= -\frac{1}{2} dx \\
+    -e^{-y_o} &= -\frac{1}{2}x + c_1\\
+    e^{-y_o} &= \frac{1}{2}x + c_1\\
+    -y_o &= \ln(\frac{1}{2}x + c_1) = \ln(\frac{x + 2c_1}{2}) \\
+    y_o(x) &= \ln(\frac{2}{x + 2c_1})
+\intertext{applying the boundary condition given $y(1) = 0$,}
+    y_o(1) &= \ln(\frac{2}{1 + 2c_1}) = 0 \implies c_1 = \frac{1}{2}
+\intertext{so that our outer solution becomes}
+    y_o(x) &= \ln(\frac{2}{x + 1})
+\end{align*}
+where $x = \mathcal{O}(1)$.
+
+For the inner solution, we have to consider changes in the boundary layer by making a change of variables
+\begin{align*}
+    \xi = \frac{x}{\delta(\e)} \hspace{0.3cm} \textnormal{ and } \hspace{0.3cm} Y(\xi) = y(\delta(\e)\xi)
+\end{align*}
+So that (7) becomes
+\[
+    \frac{\e}{\delta(\e)^2}Y''(\xi) + 2\frac{Y'(\xi)}{\delta(\e)} + e^{Y(\xi)} = 0
+\]
+
+We want to ensure that no terms (of non-zero order) reach asymptotic behavior in relation to the others. Note that the exponential term is just an infinite summation of zero-order terms. So we compare the coefficients $\frac{\e}{\delta(\e)^2}$, $\frac{1}{\delta(\e)}$, and 1, since $e^{\xi}$ is simply . This leaves us with the cases
+\begin{enumerate}
+    \item ${\displaystyle \frac{\e}{\delta(\e)^2}} \textnormal{ and } {\displaystyle \frac{2}{\delta(\e)}}$ have the same order.
+    \item ${\displaystyle \frac{\e}{\delta(\e)^2}}$ and 1 have the same order.
+\end{enumerate}
+
+Case (1) is desirable so that $\delta(\e) = \mathcal{O}(\e)$, otherwise the second and first order terms would not be comparatively small. So we take $\delta(\e) = \e$ which leads to the scaled ODE
+
+\begin{align*}
+    \frac{1}{\epsilon}Y''(\xi) + \frac{2}{\e}Y'(\xi) + e^{Y(\xi)} &= 0 \\
+    Y''(\xi) + 2 Y'(\xi) + \e e^{Y(\xi)} &= 0
+\end{align*}
+
+And so we can find our inner approximation be setting $\e = 0$ so that we have
+
+\begin{align*}
+    Y''(\xi) + 2Y'(\xi) &= 0
+\intertext{which has the solution}
+    Y(\xi) &= c_1 + c_2e^{-2 \xi}
+\intertext{and when the initial condition $Y(0) = y(0) = 0$ is applied, we find that}
+    Y(\xi) &= c_1(-1 + e^{-2 \xi})
+\intertext{which corresponds to the inner approximation}
+    y_i(x) &= c_1(-1 + e^{-\frac{2}{\e}x})
+\end{align*}
+
+Collecting our outer and inner approximations to (7):
+
+\begin{align*}
+y_o(x) &= \ln(\frac{2}{x + 1}) \ \ \ \ \ \ \ \ \ \ \ \ \  x = \mathcal{O}(1) \\
+y_i(x) &= c_1(-1 + e^{-\frac{2}{\e}x}) \ \ \ \ \ \ \ x = \mathcal{O}(\e) 
+\end{align*}
+
+Which are applicable for $x \in [0,1]$. We want to examine the overlap region, where $x = \mathcal{O}(\sqrt{\e})$, so we create the intermediate variable
+
+\begin{align*}
+    \eta = \frac{x}{\sqrt{\e}}
+\end{align*}
+
+and ensure that (7) and (8) converge to the same value as $e \rightarrow 0^+$, i.e.
+
+\[
+\lim_{\e \rightarrow 0+}y_o(\sqrt{\e}\eta) = \lim_{\e \rightarrow 0+}y_i(\sqrt{\e}\eta)
+\]
+
+Computing the LHS,
+\[
+\lim_{\e \rightarrow 0+}y_o(\sqrt{\e}\eta) = \lim_{\e \rightarrow 0+} \ln(\frac{2}{\sqrt{\e} \eta + 1}) = \ln(2)
+\]
+which becomes our matching condition. Then
+\[
+\lim_{\e \rightarrow 0+}y_i(\sqrt{\e}\eta) = \lim_{\e \rightarrow 0+}c_1(-1 + e^{-\frac{2}{\e}\sqrt{\e}\eta}) = -c_1 = \ln(2) \implies c_1 = -\ln(2)
+\]
+
+And so our updated list of approximations becomes
+
+\begin{align}
+y_o(x) &= \ln(\frac{2}{x + 1}) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x = \mathcal{O}(1) \\
+y_i(x) &= -\ln(2)(-1 + e^{-\frac{2}{\e}x}) \ \ \ \ \ \ \ x = \mathcal{O}(\e) 
+\end{align}
+
+We now take the sum of the inner and outer approximations, and subtract the matching condition, to find our uniform approximation:
+
+\begin{align}
+y_u(x) &= y_o(x) + y_i(x) - \ln(2) \nonumber \\
+y_u(x) &= \ln(\frac{2}{x + 1}) - e^{-\frac{2}{\e}x} \label{eq1}
+\end{align}
+
+\pagebreak
+
+\subsection*{Part (b)}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 20cm]{prob3alleps.png}
+\end{figure}
+Clearly, the inner and outer approximations follow the uniform approximation more closely as $\e \rightarrow 0^+$. In fact, for $\e = 0.01$, the overlap region essentially disappears. It is also reassuring that the initial conditions appear to be satisfied by the uniform solution, since $y_u(0) = 0 \textnormal{ and } y_u(1) = 0$ 
+
+\pagebreak
+
+\section*{Problem 3}
+
+\begin{align}
+    \frac{du}{dt} = v, \hspace{1.5cm} \e\frac{dv}{dt} = -u^2 - v, \hspace{1.5cm} u(0) = 1, \hspace{1cm} v(0) = 0, \hspace{0.75cm} 0 < \e \ll 1
+\end{align}
+
+\subsection*{Part (a)}
+
+Use singular perturbation methods to obtain a uniform approximation to the solution of (11). State clearly both the inner and outer solutions that you derived for both $u(t) \textnormal{ and } v(t)$.
+
+So that we can approximate the solution to (11), let
+\begin{align*}
+    u &= u_0 + \e u_1 + \mathcal{O}(\e^2) \\
+    v &= v_0 + \e v_1 + \mathcal{O}(\e^2)
+\end{align*}
+Setting $\e = 0$ yields the zeroth order approximation of the system:
+
+\begin{align*}
+&\begin{cases}
+\frac{du_0}{dt} = v_0 \\
+0 = -u_0^2 - v_0 
+\end{cases}
+\\
+\implies 
+&\begin{cases}
+\frac{du_0}{dt} = v_0 \\
+u_0^2 = -v_0
+\end{cases}
+\end{align*}
+And so by substitution,
+\begin{align*}
+    \frac{du_0}{dt} &= -u_0^2 \\
+\intertext{which has the solution}
+    u_0(t) &= -\frac{1}{-t + c_1}
+\intertext{and since $u(0) = 1 = u_0(0)$,}
+    u_0(t) &= \frac{1}{t+1}
+\end{align*}
+Which means that our zeroth order approximation for $v(t)$ is
+\begin{align*}
+    v_0(t) = -\frac{1}{(t+1)^2}
+\end{align*}
+Collecting these \textbf{outer} approximations:
+\begin{align}
+    u_o(t) &= \frac{1}{t+1} \\
+    v_o(t) &= -\frac{1}{(t+1)^2}
+\end{align}
+Now we find the inner approximation, first by creating the scaled time variable:
+\begin{align*}
+    \Bar{t} = \frac{t}{\e}
+\end{align*}
+And defining the substitutions:
+\begin{align*}
+    U(\bar{t}) &= u(\e \Bar{t}) \\
+    V(\bar{t}) &= v(\e \bar{t})
+\intertext{which yields the scaled system}
+\begin{cases}
+\frac{dU}{d\bar{t}} = \e V(\bar{t}) \\
+\frac{dV}{d\bar{t}} = -U^2(\bar{t}) - V(\bar{t})
+\end{cases}
+\end{align*}
+Again we want to attain an approximation of the above system, and so we define
+\begin{align*}
+    U = U_0 + \e U_1 + \mathcal{O}(\e^2) \\
+    V = V_0 + \e V_1 + \mathbf{O}(\e^2)
+\end{align*}
+and again by setting $\e = 0$, our approximated scaled system becomes
+$$
+\begin{cases}
+    U_0' = 0 \\
+    V_0' = -U_0^2 - V_0
+\end{cases}
+$$
+And by our initial conditions, $U_0(0) = u_0(0) = 1$ and $V_0(0) = v_0(0) = 0$, so that the first equation of the system, as it is written above, has the solution
+\begin{align*}
+    U_0(\bar{t}) &= 1
+\intertext{and the second equation is thus}
+    V_0' &= -1 - V_0 \\
+    V_0' + V_0 &= -1
+\intertext{which is a simple linear ODE with the general solution}
+    V_0(\bar{t}) &= -e^{-\bar{t} - c_2} - 1
+\intertext{and with the initial condition above,}
+    V_0(\bar{t}) &= e^{-\bar{t}} - 1
+\end{align*}
+Collecting these zeroth order approximations,
+$$
+\begin{cases}
+U_0(\bar{t}) = 1 \\
+V_0(\bar{t}) = e^{-\bar{t}} - 1
+\end{cases}
+$$
+which correspond to the \textbf{inner} approximations of our original variables:
+
+\begin{align}
+u_i(t) = 1 \\
+v_i(t) = e^{-\frac{t}{\e}} - 1
+\end{align}
+
+We now verify that the matching conditions for each set of inner and outer solutions hold, the matching condition being for $u$ being:
+\[
+\lim_{t \rightarrow 0}u_0(t) = \lim_{\e \rightarrow 0}u_i(t) 
+\]
+which is clearly satisfied since
+\[
+\lim_{t \rightarrow 0}u_0(t) = \lim_{t \rightarrow 0}\frac{1}{t+1} = 1 
+\equiv u_i(t)
+\]
+Similarly, the matching condition for $v$ is
+\[
+\lim_{t \rightarrow 0}v_0(t) = \lim_{\e \rightarrow 0}v_i(t) 
+\]
+which is also satisfied since
+\[
+\lim_{t \rightarrow 0}v_0(t) = \lim_{t \rightarrow 0}-\frac{1}{(t+1)^2} = -1 
+= \lim_{\e \rightarrow 0}v_i(t) = 0 - 1
+\]
+
+Now, we can find our \textbf{uniform approximations} by summing the inner and outer approximation and subtracting the common limit for each variable:
+\begin{align}
+    u_{uniform} &= \frac{1}{t+1} \\
+    v_{uniform} &= -\frac{1}{(t+1)^2} + e^{-t}
+\end{align}
+
+\pagebreak
+\subsection*{Part (b)}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 20cm]{prob3allstuff.png}
+\end{figure}
+
+ Clearly, since the approximations for $u(t)$ did not depend on $\e$, decreasing its value did not effect the graphs. However, for the approximations of $v(t)$, the overlap region becomes smaller for smaller values of $\e$, although even for \say{larger} values of epsilon, the inner and outer approximations follow the uniform approximation nicely.
+ 
+ \pagebreak
+ 
+\section*{Problem 4}
+
+Consider the mass-spring problem, where we consider two identical masses connected
+by three identical springs. Assuming a general Hooke’s law spring, using Newton’s law of forces, and ignoring the viscous damping between the two springs, the following system of second order linear ODEs can be written:
+\begin{align}
+    m\Ddot{x_1} &= -c\Dot{x_1} - kx_1 + k(x_2 - x_1) \\
+    m\Ddot{x_2} &= -c\dot{x_2} - kx_2 + k(x_1 - x_2) \nonumber
+\end{align}
+where $u_1 = \dot{x_1}$ and $u_2 = \dot{x_2}$.
+
+\subsection*{Part (a)}
+For this part of the problem, we assume no damping, so $c = 0$. Define the \textbf{natural frequency} by the constant $\omega = \frac{k}{m}$. Define the new state variables $\boldsymbol{y} = [y_1,y_2,y_3,y_4]^T$, where $y_1 = x_1$, $y_2 = u_1$, $y_3 = x_2$, and $y_4 = u_2$. Rewrite the above system of second order linear ODEs into a system of first order linear ODEs:
+\begin{align*}
+    \boldsymbol{\dot{y}} = A\boldsymbol{y}, \hspace{1cm} \boldsymbol{y}(0) = \boldsymbol{y}_0
+\end{align*}
+Consider the case where $c = 0$, and defining $\omega^2 = \frac{k}{m}$, the system of equations (18) becomes
+\begin{align}
+    \dot{y_2} &= -\omega^2y_1 + \omega^2(y_3 - y_1) \\
+    \dot{y_4} &= -\omega^2y_3 + \omega^2(y_1 - y_3) \nonumber
+\end{align}
+Otherwise written, \\
+\begin{align*}
+\underbrace{\begin{pmatrix}
+\dot{y_1} \\
+\dot{y_2} \\
+\dot{y_3} \\
+\dot{y_4}
+\end{pmatrix}}_{\boldsymbol{\dot{y}}}
+&= 
+\underbrace{\begin{pmatrix}
+0 & 1 & 0 & 0 \\
+-2\omega^2 & 0 & \omega^2 & 0 \\
+0 & 0 & 0 & 1 \\
+\omega^2 & 0 & -2\omega^2 & 0
+\end{pmatrix}}_{A}
+\cdot
+\underbrace{\begin{pmatrix}
+y_1 \\
+y_2 \\
+y_3 \\
+y_4
+\end{pmatrix}}_{\boldsymbol{\dot{y}}}
+\end{align*}
+To find the eigenvalues of $A$ given above, we first calculate its eigenvalues and corresponding eigenvectors with Matlab:
+$$
+\begin{cases}
+\lambda_1 = -\omega i \\
+\xi_1 =
+\begin{pmatrix}
+\frac{i}{\omega} \\
+1 \\
+\frac{i}{\omega} \\
+1
+\end{pmatrix}
+\end{cases} %%%%%%
+\begin{cases}
+\lambda_2 = \omega i \\
+\xi_2 =
+\begin{pmatrix}
+-\frac{i}{\omega} \\
+1 \\
+-\frac{i}{\omega} \\
+1
+\end{pmatrix}
+\end{cases} %%%%%
+\begin{cases}
+\lambda_3 = -\sqrt{3}\omega i \\
+\xi_3 =
+\begin{pmatrix}
+-\frac{i}{\sqrt{3}\omega} \\
+-1 \\
+\frac{i}{\sqrt{3}\omega} \\
+1
+\end{pmatrix} %%%%%%
+\end{cases}
+\begin{cases}
+\lambda_4 = \sqrt{3}\omega i \\
+\xi_4 =
+\begin{pmatrix}
+\frac{i}{\sqrt{3}\omega} \\
+-1 \\
+-\frac{i}{\sqrt{3}\omega} \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+We use the above eigenvectors to create the matrix whose columns consist those vectors 
+\[
+P = 
+\begin{pmatrix}
+\frac{i}{\omega}  & -\frac{i}{\omega} & -\frac{i}{\sqrt{3}\omega} & \frac{i}{\sqrt{3}\omega} \\
+1 & 1 & -1 & -1 \\
+\frac{i}{\omega} & -\frac{i}{\omega} & \frac{i}{\sqrt{3}\omega} & -\frac{i}{\sqrt{3}\omega} \\
+1 &  1 & 1 & 1
+\end{pmatrix}
+\]
+\pagebreak
+where $P^{-1} \cdot A \cdot P$ would produce the \textbf{Jordan canonical form}, which would contain complex entries. Since we want to find the \textbf{real Jordan canonical form}, we define the new matrix using $\xi_1$ and $\xi_3$
+\begin{align*}
+Q = 
+\begin{pmatrix}
+0 & \frac{1}{\omega} & 0 & -\frac{1}{\sqrt{3}\omega} \\
+1 & 0 & -1 & 0 \\
+0 & \frac{1}{\omega} & 0 & \frac{1}{\sqrt{3}\omega} \\
+1 & 0 & 1 & 0
+\end{pmatrix}
+\end{align*}
+Using Matlab to find $Q^{-1}$, we use Matlab again to calculate the real Jordan canonical form:
+\begin{align*}
+J_a = Q^{-1} \cdot A \cdot Q =
+\begin{pmatrix}
+0 & -\omega & 0 & 0 \\
+\omega & 0 & 0 & 0 \\
+0 & 0 & 0 & -\sqrt{3}\omega \\
+0 & 0 & \sqrt{3}\omega & 0
+\end{pmatrix}
+\end{align*}
+Which gives the \textbf{fundamental solution}
+\begin{align}
+    \boldsymbol{\Psi}(t) = \exp(J_at) = 
+\begin{pmatrix}
+\cos(\omega t) & -\sin(\omega t) & 0 & 0 \\
+\sin(\omega t) & \cos(\omega t) & 0 & 0 \\
+0 & 0 & \cos(\sqrt{3}\omega t) & -\sin(\sqrt{3}\omega t ) \\
+0 & 0 & \sin(\sqrt{3}\omega t) & \cos(\sqrt{3}\omega t
+\end{pmatrix}
+\end{align}
+Thus, a real fundamental solution to our system $\boldsymbol{\dot{y}} = A\boldsymbol{y}$ satisfies
+\begin{align}
+    \boldsymbol{\Phi}(t) &= P\cdot \boldsymbol{\Psi}(t)\cdot P^{-1} \\
+    &= \exp(At)
+\end{align}
+so that 
+\begin{align*}
+    \boldsymbol{y}(t) = \boldsymbol{\Phi}(t)\boldsymbol{y}(0)
+\end{align*}
+is a real solution given a set of initial conditions represented by $\boldsymbol{y}(0)$
+
+\pagebreak
+
+\subsection*{Part (b)}
+
+Recall the matrix $A$ as above
+$$
+\begin{pmatrix}
+0 & 1 & 0 & 0 \\
+-2\omega^2 & 0 & \omega^2 & 0 \\
+0 & 0 & 0 & 1 \\
+\omega^2 & 0 & -2\omega^2 & 0
+\end{pmatrix}
+$$
+with eigenvalues and eigenvectors
+$$
+\begin{cases}
+\lambda_1 = -\omega i \\
+\xi_1 =
+\begin{pmatrix}
+\frac{i}{\omega} \\
+1 \\
+\frac{i}{\omega} \\
+1
+\end{pmatrix}
+\end{cases} %%%%%%
+\begin{cases}
+\lambda_2 = \omega i \\
+\xi_2 =
+\begin{pmatrix}
+-\frac{i}{\omega} \\
+1 \\
+-\frac{i}{\omega} \\
+1
+\end{pmatrix}
+\end{cases} %%%%%
+\begin{cases}
+\lambda_3 = -\sqrt{3}\omega i \\
+\xi_3 =
+\begin{pmatrix}
+-\frac{i}{\sqrt{3}\omega} \\
+-1 \\
+\frac{i}{\sqrt{3}\omega} \\
+1
+\end{pmatrix} %%%%%%
+\end{cases}
+\begin{cases}
+\lambda_4 = \sqrt{3}\omega i \\
+\xi_4 =
+\begin{pmatrix}
+\frac{i}{\sqrt{3}\omega} \\
+-1 \\
+-\frac{i}{\sqrt{3}\omega} \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+
+Clearly, in the case of no dampening such that $c = 0$, $A : V \rightarrow V$ is a linear transformation on a complex vector space, with complex (or rather, purely imaginary,) eigenvalues, whose corresponding eigenvectors have complex entries. Further, we have that the \textit{algebraic multiplicity} of eigenvalue $\lambda_i$ ($i \in \{1,2,3,4\}$) is equal to its \textit{geometric multiplicity}. Thus, each \textit{generalized $\lambda_i$-eigenspace}, which is the span of the eigenvector $\xi_i$ has dimension 1, and are the \textit{invariant subspaces} of $\boldsymbol{\Phi}$ as defined by (21). 
+
+Since the four eigenvectors have zero real part, we have that 
+\begin{itemize}
+    \item The \textit{stable subspace} $E^s = \emptyset$ which has dimension zero
+    \item The \textit{unstable subspace} $E^u = \emptyset$ which has dimension zero
+    \item The \textit{center subspace} $E^c = \textnormal{span}\{\xi_1,\xi_2,\xi_3,\xi_4\}$ which has dimension four
+\end{itemize}
+To find the \textit{equilibrium point}, we observe the system (18) with zero dampening and set the equations to zero
+\begin{align*}
+&\begin{cases}
+    0 &= - \omega^2x_1 + \omega^2(x_2 - x_1) \\
+    0 &= - \omega^2x_2 + \omega^2(x_1 - x_2) \\
+\end{cases} \\
+&\begin{cases}
+    0 &= - x_1 + x_2 - x_1 \\
+    0 &= - x_2 + x_1 - x_2 \\
+\end{cases} \\
+&\begin{cases}
+    x_2 &= 2x_1    \\
+    x_1 &= 2x_2   \\
+\end{cases}
+\intertext{Subbing the first equation into the second,}
+&    x_1 = 4x_1 \\
+\implies
+&\begin{cases}
+     x_1 &= 0 \\
+     x_2 &= 0
+\end{cases}
+\end{align*}
+Thus $x_1 = x_2 = 0$ is the only equilibrium solution to the system with no dampening. We now wish to linearize this system about these fixed points, in order to get a sense of the qualitative behavior of the system around this equilibrium. To do this, we find the Jacobian which is defined, in general, as
+\pagebreak
+\[
+Df =
+\begin{pmatrix}
+\frac{\partial f_1}{\partial x_1} & \frac{\partial f_1}{\partial x_2}  & \frac{\partial f_1}{\partial x_3} & \frac{\partial f_1}{\partial x_4} \\
+\frac{\partial f_2}{\partial x_1} & \frac{\partial f_2}{\partial x_2} & \frac{\partial f_2}{\partial x_3} & \frac{\partial f_2}{\partial x_4} \\
+\frac{\partial f_3}{\partial x_1} & \frac{\partial f_3}{\partial x_2} & \frac{\partial f_3}{\partial x_3} & \frac{\partial f_3}{\partial x_4} \\
+\frac{\partial f_4}{\partial x_1} & \frac{\partial f_4}{\partial x_2} & \frac{\partial f_4}{\partial x_3} & \frac{\partial f_4}{\partial x_4} \\
+\end{pmatrix}
+\]
+In this case, we define these functions
+\begin{align*}
+    f_1 = \dot{y_1} &= y_2 \\
+    f_2 = \dot{y_2} &= -2\omega^2y_1 + \omega^2y_3 \\
+    f_3 = \dot{y_3} &= y_4 \\
+    f_4 = \dot{y_4} &= \omega^2y_1 - 2\omega^2y_3
+\end{align*}
+So that $Df$ becomes
+
+$$
+\begin{pmatrix}
+0 & 1 & 0 & 0 \\
+-2\omega^2 & 0 & \omega^2 & 0 \\
+0 & 0 & 0 & 1 \\
+\omega^2 & 0 & -2\omega^2 & 0
+\end{pmatrix}
+$$
+which is clearly just $A$ from above, which we should expect from how the problem is defined. Technically, we want to examine the Jacobian evaluated at the fixed points, being $y_1 = y_2 = y_3 = y_4 - 0$, but of course the matrix does not depend on our variables. We already found the eigenvalues of $Df(y_e)$ in part (a), to be
+\begin{itemize}
+    \item $-\omega i$
+    \item $\omega i$
+    \item $-\sqrt{3}\omega i$
+    \item $\sqrt{3}\omega i$
+\end{itemize}
+Since each of the eigenvalues above have zero real part, we know that by definition, the fixed point $x_1 = x_2 = 0$ in terms of how the system is originally described is not \textit{hyperbolic},.
+
+Since there is only one equilibrium point, where each weight is at its starting location, we know that the weights will only be stationary in the absence of any perturbation due to $c=0$, which suggests that this equilibrium is a source.
+
+\pagebreak
+
+\subsection*{Part (c)}
+
+We now solve the system (19) with the initial condition
+$$
+\boldsymbol{y}(0) = (x_{10},0,x_{20},0)^T
+$$
+We already have the real fundamental solution, matrix (21), so we find the unique solution by left-multiplying (20) to the initial condition above:
+\begin{align*}
+\boldsymbol{y}(t) &= \boldsymbol{\Phi}(t)\boldsymbol{y}(0) =
+\boldsymbol{\Phi}(t)
+\begin{pmatrix}
+x_{10} \\
+0 \\
+x_{20} \\
+0
+\end{pmatrix} \\
+\boldsymbol{y}(t) &= 
+\begin{pmatrix}
+ \frac{\cos(\omega t)}{2}[x_{10} + x_{20}] + \frac{\cos(\sqrt{3}\omega t)}{2}[x_{10} - x_{20}] \\
+\frac{\omega}{2}[x_{10}(\sin(\omega t) + \sqrt{3}\sin(\sqrt{3}\omega t)) + x_{20}(\sin(\omega t) - \sqrt{3}\sin(\sqrt{3} \omega t))] \\
+\frac{\cos(\omega t)}{2}[x_{10} + x_{20}] + \frac{\cos(\sqrt{3}\omega t)}{2}[-x_{10} + x_{20}] \\
+\frac{\omega}{2}[x_{10}(\sin(\omega t) - \sqrt{3}\sin(\sqrt{3}\omega t)) + x_{20}(\sin(\omega t) + \sqrt{3}\sin(\sqrt{3} \omega t))]
+\end{pmatrix}
+\end{align*}
+In terms of the original variables of the system, $x_1$ and $x_2$, we have that
+\begin{align*}
+\begin{cases}
+x_1 (t) =  \frac{\cos(\omega t)}{2}[x_{10} + x_{20}] + \frac{\cos(\sqrt{3}\omega t)}{2}[x_{10} - x_{20}] \\
+\dot{x_1} (t) = \frac{\omega}{2}[x_{10}(\sin(\omega t) + \sqrt{3}\sin(\sqrt{3}\omega t)) + x_{20}(\sin(\omega t) - \sqrt{3}\sin(\sqrt{3} \omega t))] \\
+x_2(t) = \frac{\cos(\omega t)}{2}[x_{10} + x_{20}] + \frac{\cos(\sqrt{3}\omega t)}{2}[-x_{10} + x_{20}] \\
+\dot{x_2}(t) = \frac{\omega}{2}[x_{10}(\sin(\omega t) - \sqrt{3}\sin(\sqrt{3}\omega t)) + x_{20}(\sin(\omega t) + \sqrt{3}\sin(\sqrt{3} \omega t))]
+\end{cases}
+\end{align*}
+which describes the positions and velocities of each of the masses over time. Plotting the equations which represent the positions of the weights at time $t$, $x_1(t) \textnormal{ and } x_2(t)$, for varying initial conditions shows that the maximum displacement of the weights is dependent on their initial displacement. Further,
+
+\begin{itemize}
+    \item $x_1 = x_2 > 0$
+    \begin{itemize}
+        \item the trajectories of the weights follow each other exactly; the displacements for each of them, from their respective equilibrium positions ($x_1=x_2=0$), are the same for any time $t$ 
+    \end{itemize}
+    \item $x_1 = -x_2 > 0$
+    \begin{itemize}
+        \item the weights are always moving in opposite directions, but reach their equilibrium positions at the same times
+    \end{itemize} 
+\end{itemize}
+
+\pagebreak
+
+\subsection*{Part (d)}
+
+We now assume the following
+\begin{align*}
+    c > 0 \\
+    \omega^2 &= \frac{k}{m} \\
+    2 \gamma &= \frac{c}{m} \ll \omega \\
+\boldsymbol{y}(t) &= 
+\begin{pmatrix}
+y_1 \\
+y_2 \\
+y_3 \\
+y_4
+\end{pmatrix}
+=
+\begin{pmatrix}
+x_1 \\
+u_1 = \dot{x_1} \\
+x_2 \\
+u_2 = \dot{x_2}
+\end{pmatrix}
+\end{align*}
+We wish to write the system of second order ODEs as a system of first order ODEs using the above definitions:
+\begin{align*}
+\underbrace{\begin{pmatrix}
+\dot{y_1} \\
+\dot{y_2} \\
+\dot{y_3} \\
+\dot{y_4}
+\end{pmatrix}}_{\boldsymbol{\dot{y}}}
+=
+\underbrace{\begin{pmatrix}
+0 & 1 & 0 & 0 \\
+-2\omega^2 & -2\gamma & \omega^2 & 0 \\
+0 & 0 & 0 & 1 \\
+\omega^2 & 0 & -2\omega^2 & -2\gamma
+\end{pmatrix}}_B
+\cdot
+\underbrace{\begin{pmatrix}
+y_1 \\
+y_2 \\
+y_3\\
+y_4
+\end{pmatrix}}_{\boldsymbol{y}}
+\end{align*}
+We repeat the process of part (a) by first using Matlab to find the eigenvalues, and corresponding eigenvectors of matrix B:
+$$
+\begin{cases}
+\lambda_1 = -(\gamma + \sqrt{\gamma^2 - \omega^2}) \\
+\xi_1 = 
+\begin{pmatrix}
+-\frac{1}{\omega^2}(\gamma - \sqrt{\gamma^2 - \omega^2}) \\
+1 \\
+-\frac{1}{\omega^2}(\gamma - \sqrt{\gamma^2 - \omega^2}) \\
+1
+\end{pmatrix}
+\end{cases}
+\begin{cases}
+\lambda_2 = -(\gamma + \sqrt{\gamma^2 - 3\omega^2}) \\
+\xi_2 =
+\begin{pmatrix}
+\frac{1}{3\omega^2}(\gamma - \sqrt{\gamma^2 - 3\omega^2} \\
+-1 \\
+-\frac{1}{3\omega^2}(\gamma - \sqrt{\gamma^2 - 3\omega^2} \\
+1
+\end{pmatrix}
+\end{cases}
+\begin{cases}
+\lambda_3 = -\gamma + \sqrt{\gamma^2 - \omega^2} \\
+\xi_3 =
+\begin{pmatrix}
+-\frac{1}{\omega^2}(\gamma + \sqrt{\gamma^2 - \omega^2}) \\
+1 \\
+-\frac{1}{\omega^2}(\gamma + \sqrt{\gamma^2 - \omega^2}) \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+$$
+\begin{cases}
+\lambda_4 = -\gamma + \sqrt{\gamma^2 - 3\omega^2} \\
+\xi_4 = 
+\begin{pmatrix}
+\frac{1}{3\omega^2}(\gamma + \sqrt{\gamma^2 - 3\omega^2} \\
+-1 \\
+-\frac{1}{3\omega^2}(\gamma + \sqrt{\gamma^2 - 3\omega^2} \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+Note that by our assumptions, we have complex eigenvalues and eigenvectors. Below, we factor out the $i$ from our values and vectors :
+$$
+\begin{cases}
+\lambda_1 = -\gamma - i \sqrt{\omega^2 - \gamma^2}) \\
+\xi_1 = 
+\begin{pmatrix}
+\frac{1}{\omega^2}(-\gamma + i\sqrt{\omega^2 - \gamma^2}) \\
+1 \\
+\frac{1}{\omega^2}(-\gamma + i\sqrt{\omega^2 - \gamma^2}) \\
+1
+\end{pmatrix}
+\end{cases} %%%%%
+\begin{cases}
+\lambda_2 = -\gamma - i \sqrt{3\omega^2 - \gamma^2} \\
+\xi_2 =
+\begin{pmatrix}
+\frac{1}{3\omega^2}(\gamma - i\sqrt{3\omega^2 - \gamma^2} \\
+-1 \\
+\frac{1}{3\omega^2}(-\gamma + i\sqrt{3\omega^2 - \gamma^2} \\
+1
+\end{pmatrix}
+\end{cases}
+\begin{cases}
+\lambda_3 = -\gamma + i\sqrt{\omega^2 - \gamma^2} \\
+\xi_3 =
+\begin{pmatrix}
+\frac{1}{\omega^2}(-\gamma - i\sqrt{\omega^2 - \gamma^2}) \\
+1 \\
+\frac{1}{\omega^2}(-\gamma - i\sqrt{\omega^2 - \gamma^2}) \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+$$
+\begin{cases}
+\lambda_4 = -\gamma + i\sqrt{\gamma^2 - 3\omega^2} \\
+\xi_4 = 
+\begin{pmatrix}
+\frac{1}{3\omega^2}(\gamma + i\sqrt{3\omega^2 - \gamma^2} \\
+-1 \\
+\frac{1}{3\omega^2}(-\gamma - i \sqrt{3\omega^2 - \gamma^2} \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+Thus we can see that $\lambda_1$ and $\lambda_3$ are conjugates, and $\lambda_2$ and $\lambda_4$ are likewise conjugates. The same can be said of their corresponding eigenvectors. So, to create our matrix $P$, we separate the real and imaginary parts of $\xi_1$ and $\xi_2$ to create the columns:
+$$
+P = 
+\begin{pmatrix}
+-\frac{1}{\omega^2}\gamma & \frac{1}{\omega^2}\sqrt{\omega^2 - \gamma^2} & \frac{1}{3\omega^2}\gamma & -\frac{1}{3\omega^2}\sqrt{3\omega^2 - \gamma^2} \\
+1 & 0 & -1 & 0 \\
+-\frac{1}{\omega^2}\gamma &
+\frac{1}{\omega^2}\sqrt{\omega^2 - \gamma^2} & -\frac{1}{3\omega^2}\gamma & \frac{1}{3\omega^2}\sqrt{3\omega^2 - \gamma^2} \\
+1 & 0 & 1 & 0
+\end{pmatrix}
+$$
+We can then use Matlab to find our \textbf{real Jordan canonical form}:
+\begin{align*}
+    J_b &= P^{-1} \cdot B \cdot P \\
+    J_b &= 
+    \begin{pmatrix}
+    -\gamma & -\sqrt{\omega^2 - \gamma^2} & 0 & 0 \\
+    \sqrt{\omega^2 - \gamma^2} & -\gamma & 0 & 0 \\
+    0 & 0 & -\gamma & -\sqrt{3\omega^2 - \gamma^2} \\
+    0 & 0 & \sqrt{3\omega^2 - \gamma^2} & -\gamma
+    \end{pmatrix}
+\end{align*}
+And our fundamental solution can easily be obtained with Maple, since Matlab did not provide as \say{nice} of an answer:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 17cm]{fundamentalsoln4d.PNG}
+\end{figure}
+
+\pagebreak
+
+\subsection*{Part (e)}
+Recall the eigenvectors of our system with dampening
+$$
+\begin{cases}
+\lambda_1 = -\gamma - i \sqrt{\omega^2 - \gamma^2}) \\
+\xi_1 = 
+\begin{pmatrix}
+\frac{1}{\omega^2}(-\gamma + i\sqrt{\omega^2 - \gamma^2}) \\
+1 \\
+\frac{1}{\omega^2}(-\gamma + i\sqrt{\omega^2 - \gamma^2}) \\
+1
+\end{pmatrix}
+\end{cases} %%%%%
+\begin{cases}
+\lambda_2 = -\gamma - i \sqrt{3\omega^2 - \gamma^2} \\
+\xi_2 =
+\begin{pmatrix}
+\frac{1}{3\omega^2}(\gamma - i\sqrt{3\omega^2 - \gamma^2} \\
+-1 \\
+\frac{1}{3\omega^2}(-\gamma + i\sqrt{3\omega^2 - \gamma^2} \\
+1
+\end{pmatrix}
+\end{cases}
+\begin{cases}
+\lambda_3 = -\gamma + i\sqrt{\omega^2 - \gamma^2} \\
+\xi_3 =
+\begin{pmatrix}
+\frac{1}{\omega^2}(-\gamma - i\sqrt{\omega^2 - \gamma^2}) \\
+1 \\
+\frac{1}{\omega^2}(-\gamma - i\sqrt{\omega^2 - \gamma^2}) \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+$$
+\begin{cases}
+\lambda_4 = -\gamma + i\sqrt{\gamma^2 - 3\omega^2} \\
+\xi_4 = 
+\begin{pmatrix}
+\frac{1}{3\omega^2}(\gamma + i\sqrt{3\omega^2 - \gamma^2} \\
+-1 \\
+\frac{1}{3\omega^2}(-\gamma - i \sqrt{3\omega^2 - \gamma^2} \\
+1
+\end{pmatrix}
+\end{cases}
+$$
+So we can define the classes of subspaces spanned by these eigenvectors:
+\begin{itemize}
+    \item The \textbf{stable subspace} $E^s = \textnormal{span}\{\xi_1,\xi_2,\xi_3,\xi_4\}$ which has dimension 4. This makes sense since the system has dampening, and thus will always return to their steady-state positions if left alone.
+    \item The \textbf{unstable subspace} $E^u = \emptyset$ which has dimension 0.
+    \item The \textbf{center subspace} $E^c = \emptyset$ which has dimension 0.
+\end{itemize}
+since all of the eigenvalues have negative real parts. As in the case without dampening, the Jacobian will end up being the constant matrix, since we are dealing with a set of linear ODEs:
+$$
+Df = \begin{pmatrix}
+0 & 1 & 0 & 0 \\
+-2\omega^2 & -2\gamma & \omega^2 & 0 \\
+0 & 0 & 0 & 1 \\
+\omega^2 & 0 & -2\omega^2 & -2\gamma
+\end{pmatrix}
+$$
+which has the above eigenvalues and vectors. We refer to our reduced system of 4 ODEs, and set them to zero, to solve for any equilibria:
+\begin{align*}
+\underbrace{\begin{pmatrix}
+\dot{y_1} \\
+\dot{y_2} \\
+\dot{y_3} \\
+\dot{y_4}
+\end{pmatrix}}_{\boldsymbol{\dot{y}}}
+=
+\underbrace{\begin{pmatrix}
+0 & 1 & 0 & 0 \\
+-2\omega^2 & -2\gamma & \omega^2 & 0 \\
+0 & 0 & 0 & 1 \\
+\omega^2 & 0 & -2\omega^2 & -2\gamma
+\end{pmatrix}}_B
+\cdot
+\underbrace{\begin{pmatrix}
+y_1 \\
+y_2 \\
+y_3\\
+y_4
+\end{pmatrix}}_{\boldsymbol{y}}
+=
+\boldsymbol{0}
+\end{align*}
+To satisfy the above set of equations, we must have that $y_2 = y_4 = 0$. This leaves us with
+\begin{align*}
+    &\begin{cases}
+    -2\omega^2 y_1 + \omega^2y_3 = 0 \\
+    \omega^2 y_1 - 2\omega^2y_3 = 0
+    \end{cases} \\
+\intertext{and so by substitution,}
+    y_1 &= \frac{\omega^2y_3}{2\omega^2} \\
+    \omega^2 y_1 - 2\omega^2y_3 &= 0 \\
+\implies 
+    \frac{1}{2}\omega^2y_3 - 2\omega^2y_3 &= 0 \\
+\implies y_3 = 0 \implies y_1 = 0
+\end{align*}
+
+Thus our equilibrium is at $\boldsymbol{y}(t) = (0,0,0,0)^t$. Of course, evaluating the above Jacobian at the fixed point would not change the matrix. Thus, since each of the eigenvalues has non-zero real part, we know that the equilibrium is by definition \textbf{hyperbolic}.
+\pagebreak
+
+
+
+
+
+\section*{Problem 5}
+\subsection*{Part (a)}
+Consider the second order linear ODE given by
+\begin{align}
+    \Ddot{y} + y = \e \sin(\omega t), \hspace{1cm} y(0) = 1, \hspace{1cm} \dot{y}(0) = 1, \hspace{0.75cm} 0 < \e \ll 1
+\end{align}
+We can reduce the order of (23) by defining
+\begin{align*}
+    y(t) &= x_1(t) \\
+    \dot{y}(t) &= x_2(t)
+\end{align*}
+So that we can create a system of first order ODEs
+\begin{align*}
+\underbrace{\begin{pmatrix}
+\dot{x_1}(t) \\
+\dot{x_2}(t)
+\end{pmatrix}}_{\boldsymbol{\dot{x}}}
+=
+\underbrace{\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix}}_{A}
+\cdot
+\underbrace{\begin{pmatrix}
+x_1(t) \\
+x_2(t)
+\end{pmatrix}}_{\boldsymbol{x}}
++ 
+\underbrace{\begin{pmatrix}
+0 \\
+\e \sin(\omega t)
+\end{pmatrix}}_{\boldsymbol{g}(t)}
+\end{align*}
+subject to 
+\begin{align*}
+    \boldsymbol{x}(0) = 
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix}
+\end{align*}
+Clearly matrix A is in real Jordan canonical form. Thus we can easily find our fundamental solution:
+\begin{align*}
+    \boldsymbol{\Phi}(t) &= \exp(A\cdot t) \\
+    &= 
+    \begin{pmatrix}
+    \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+\end{align*}
+
+whose inverse is clearly
+
+\begin{align*}
+\exp(-A\cdot t) =
+    \begin{pmatrix}
+    \cos(t) & -\sin(t) \\
+    \sin(t) & \cos(t)
+    \end{pmatrix}
+\end{align*}
+Consider the Variation of Constant Formula
+\begin{align}
+    \boldsymbol{x}(t) = \boldsymbol{\Phi}(t)\boldsymbol{x_0} + \int_0^t\exp(A\cdot(t - s))\boldsymbol{g}(s) ds
+\end{align}
+We can use (24) to find the unique solution $\boldsymbol{x}(t)$. First we will calculate the particular solution with the help of Matlab:
+\begin{align*}
+    \boldsymbol{x}_p(t) &= \exp(A\cdot t) \int_0^t\exp(-A\cdot s)\boldsymbol{g}(s) ds \\
+    &= 
+    \begin{pmatrix}
+     \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \int_0^t
+    \begin{pmatrix}
+    \cos(s) & -\sin(s) \\
+    \sin(s) & \cos(s)
+    \end{pmatrix}
+    \cdot 
+    \begin{pmatrix}
+    0 \\
+\e \sin(\omega s)
+    \end{pmatrix} ds\\
+    &=
+    \begin{pmatrix}
+     \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \int_0^t
+    \begin{pmatrix}
+    -\e \sin(s\omega)\sin(s) \\
+    \e \sin(s\omega)\cos(s)
+    \end{pmatrix}ds \\
+    &=
+    \begin{pmatrix}
+      \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \begin{pmatrix}
+      -\frac{\e}{2(\omega^2-2)}[(-\omega + 1)\sin((\omega + 1)t) + (\omega + 1)\sin((\omega - 1)t)] \\
+      -\frac{\e}{2(\omega^2-1)}[(\omega + 1)\cos((\omega - 1)t) + (\omega - 1)\cos((\omega + 1)t) - 2\omega]
+    \end{pmatrix} \\
+    &= 
+    \begin{pmatrix}
+    \frac{\e}{\omega^2 - 1}[\omega \sin(t) - \sin(\omega t)] \\
+    \frac{\e \omega}{\omega^2 - 1}[-\cos(\omega t) + \cos(t)]
+    \end{pmatrix}
+\end{align*}
+Thus our unique solution is
+\begin{align*}
+    \boldsymbol{x}(t) &= 
+    \begin{pmatrix}
+      \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \begin{pmatrix}
+    1 \\ 0
+    \end{pmatrix}
+    +
+      \begin{pmatrix}
+    \frac{\e}{\omega^2 - 1}[\omega \sin(t) - \sin(\omega t)] \\
+    \frac{\e \omega}{\omega^2 - 1}[-\cos(\omega t) + \cos(t)]
+    \end{pmatrix} \\
+    &=
+    \begin{pmatrix}
+    \cos(t) + \frac{\e}{\omega^2 - 1}[\omega \sin(t) - \sin(\omega t)] \\
+    -\sin(t) + \frac{\e \omega}{\omega^2 - 1}[-\cos(\omega t) + \cos(t)]
+    \end{pmatrix}
+\end{align*}
+which is clearly only defined when $\omega \neq \pm1$
+\pagebreak
+
+\subsection*{Part (b)}
+Now we consider the second order nonlinear ODE given by
+\begin{align}
+    \Ddot{y} + y = \e y(1 - \dot{y}^2), \hspace{1cm} y(0) = 1, \hspace{1cm} \dot{y}(0) = 0, \hspace{0.75cm} 0 < \e \ll 1
+\end{align}
+In order to find an approximated solution via regular perturbation, we define
+$$
+y = y_0 + \e y_1 + \mathcal{O}(\e^2)
+$$
+Subbing this into (25),
+\begin{align*}
+    \Ddot{y}_0 + \e \Ddot{y}_1 + y_0 + \e y_1 \dotsb &= \e (y_0 + \e y_1 + \dotsb)(1 - (\dot{y}_0 + \e \dot{y}_1 + \dotsb)^2) \\
+    \Ddot{y}_0 + \e \Ddot{y}_1 + y_0 + \e y_1 \dotsb &= (\e y_0 + \dotsb)(1 - \dot{y}_0^2 - 2\e\dot{y}_0\dot{y}_1 + \dotsb) \\
+    (\ddot{y}_0 + y_0) + \e(\ddot{y}_1 + y_1) &= \e y_0 - \e\dot{y}_0^2y_0 \\
+    (\ddot{y}_0 + y_0) + \e(\ddot{y}_1 + y_1 - y_0 + \dot{y_o}^2y_0) &= 0
+\end{align*}
+which yields the two ODEs
+
+\begin{align}
+\ddot{y}_0 &= -y_0 \\
+\ddot{y}_1 + y_1 &= y_0 - \dot{y}_0^2y_0
+\end{align}
+
+with the initial conditions
+$$
+\begin{cases}
+y_0(0) = 1 \\
+y_1(0) = 0 \\
+\dot{y}_0(0) = \dot{y}_1(0) = 0
+\end{cases}
+$$
+From equation (26), and the two initial conditions,
+\begin{align*}
+    y_0(t) = \cos(t)
+\end{align*}
+So that equation (27) becomes
+\begin{align*}
+    \ddot{y}_1 + y_1 &=  \cos^3(t)
+\end{align*}
+We can reduce the order of the above ODE by defining
+\begin{align*}
+    y_1(t) &= x_1(t) \\
+    \dot{y}_1(t) &= x_2(t)
+\end{align*}
+So that we can create a system of first order ODEs
+\begin{align*}
+\underbrace{\begin{pmatrix}
+\dot{x_1}(t) \\
+\dot{x_2}(t)
+\end{pmatrix}}_{\boldsymbol{\dot{x}}}
+=
+\underbrace{\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix}}_{A}
+\cdot
+\underbrace{\begin{pmatrix}
+x_1(t) \\
+x_2(t)
+\end{pmatrix}}_{\boldsymbol{x}}
++ 
+\underbrace{\begin{pmatrix}
+0 \\
+\cos^3(t)
+\end{pmatrix}}_{\boldsymbol{g}(t)}
+\end{align*}
+subject to 
+\begin{align*}
+    \boldsymbol{x}(0) = 
+\begin{pmatrix}
+0 \\ 0
+\end{pmatrix}
+\end{align*}
+Clearly matrix A is in real Jordan canonical form. Thus we can easily find our fundamental solution:
+\begin{align*}
+    \boldsymbol{\Phi}(t) &= \exp(A\cdot t) \\
+    &= 
+    \begin{pmatrix}
+    \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+\end{align*}
+
+whose inverse is clearly
+
+\begin{align*}
+\exp(-A\cdot t) =
+    \begin{pmatrix}
+    \cos(t) & -\sin(t) \\
+    \sin(t) & \cos(t)
+    \end{pmatrix}
+\end{align*}
+Consider the Variation of Constants Formula which we will use to solve for a unique solution:
+\begin{align*}
+    \boldsymbol{x}(t) = \boldsymbol{\Phi}(t)\boldsymbol{x_0} + \int_0^t\exp(A\cdot(t - s))\boldsymbol{g}(s) ds
+\end{align*}
+
+which, with our initial conditions becomes
+\begin{align*}
+    \boldsymbol{x}(t) &= \int_0^t\exp(A\cdot(t - s))\boldsymbol{g}(s) ds \\
+    &= \exp(A\cdot t) \int_0^t\exp(-A\cdot s)\boldsymbol{g}(s) ds \\
+    &= 
+    \begin{pmatrix}
+     \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \int_0^t
+    \begin{pmatrix}
+    \cos(s) & -\sin(s) \\
+    \sin(s) & \cos(s)
+    \end{pmatrix}
+    \cdot 
+    \begin{pmatrix}
+    0 \\
+    \cos^3(s)
+    \end{pmatrix} ds\\
+    &= 
+    \begin{pmatrix}
+     \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \int_0^t
+    \begin{pmatrix}
+    -\sin(s)\cos^3(s) \\
+    \cos^4(s)
+    \end{pmatrix}ds \\
+\intertext{with u-sub and a trig identity or two,}
+    &= 
+    \begin{pmatrix}
+     \cos(t) & \sin(t) \\
+    -\sin(t) & \cos(t)
+    \end{pmatrix}
+    \begin{pmatrix}
+    -\frac{1}{4} + \frac{\cos^4(t)}{4} \\
+    \frac{1}{8}[2\sin(t)\cos^3(t) + 3\cos(t)\sin(t) + 3t]
+    \end{pmatrix} \\
+    &= 
+    \begin{pmatrix}
+    \frac{1}{8}[\sin(t)(\cos(t)\sin(t)+3t] \\
+    \frac{1}{8}[3\sin(t)\cos^2(t) + t\cos(t)+2\sin(t)]
+    \end{pmatrix}
+\end{align*}
+So we have arrived at the solution for $y_1(t)$:
+\begin{align*}
+    y_1(t) = x_1(t) = \frac{1}{8}[\sin(t)(\cos(t)\sin(t)+3t]
+\end{align*}
+And so we have our two-term approximation of the solution for (25) with the given initial conditions:
+\begin{align}
+    y(t) = \cos(t) + \frac{\e}{8}\sin(t)[\cos(t)\sin(t)+3t]
+\end{align}
+Clearly (28) is not bounded, since we have the secular term ${\displaystyle \frac{3t\sin(t)}{8}}$, indicating increasing amplitude as $t$ increases without bound.
+\pagebreak
+
+
+\subsection*{Part (c)}
+We introduce the scaling term
+\begin{align*}
+    \tau = \omega t
+\end{align*}
+where $\omega = 1 + \e \omega_1 + \e^2\omega_2 + \dotsb$. Then
+\begin{align*}
+    t &= \frac{\tau}{\omega} \\
+\implies 
+    y(t) &= y(\omega t) \\
+\implies
+    \dot{y}(t) &= \omega \dot{y}(\tau) \\
+\implies 
+    \ddot{y}(t) &= \omega^2 \ddot{y}(\tau)
+\end{align*}
+Subbing these into (25) where we are only considering a two-term approximation $y(\tau) = y_0(\tau) + \e y_1(\tau) + \dotsb$,
+\begin{align*}
+    \omega^2\ddot{y}(\tau) + y(\tau) &= \e y(\tau)[1 - \omega^2\dot{y}^2(\tau)] \\
+    (1 + \e \omega_1)^2(\ddot{y}_0(\tau) + \e \ddot{y}_1(\tau)) + y_0(\tau) + \e y_1(\tau) &= \e(y_0(\tau) + \e y_1(\tau))[1 - (1 + \e \omega_1)^2(\dot{y}_0(\tau)+\e \dot{y}_1(\tau))^2] \\
+    (1 + 2\e\omega_1)(\ddot{y}_0 + \e\ddot{y}_1) + y_0 + \e y_1 &= \e y_0[1 - (1 + 2\e\omega_1)(\dot{y}_0^2 + 2\e \dot{y}_1)] \\
+    \ddot{y}_0 + \e \ddot{y}_1 + 2\e\omega_1\ddot{y}_0 + y_0 + \e y_1 &= \e y_0[1 - (\dot{y}_0^2 + 2\e \dot{y}_1 + 2\e\omega_1\dot{y}_0^2)] \\
+    \ddot{y}_0 + \e \ddot{y}_1 + 2\e\omega_1\ddot{y}_0 + y_0 + \e y_1 &= \e y_0 - \e y_0\dot{y}_0^2 \\
+    \ddot{y}_0 + y_0 + \e(\ddot{y}_1 + 2\omega_1\ddot{y}_0 + y_1 - y_0 + y_0\dot{y}_0^2) &= 0
+\end{align*}
+Which yields two ODEs
+$$
+\begin{cases}
+\ddot{y}_0 = -y_0 \\
+\ddot{y}_1 + 2\omega_1\ddot{y}_0 + y_1 - y_0 + y_0\dot{y}_0^2=0
+\end{cases}
+$$
+The first of these we have already solved:
+\begin{align*}
+    y_0(\tau) = \cos(\tau)
+\end{align*}
+So that the second ODE becomes
+\begin{align*}
+    \ddot{y}_1 - 2\omega_1\cos(\tau) + y_1 - \cos(\tau) + \cos(\tau)\sin^2(\tau) &= 0 \\
+    \ddot{y}_1 + y_1 &= 2\omega_1\cos(\tau) + \cos(\tau) - \cos(\tau)\sin^2(\tau) \\
+    \ddot{y}_1 + y_1 &= 2\omega_1\cos(\tau) + \cos(\tau) - \cos(\tau)(1 - \cos^2(\tau)) \\
+    \ddot{y}_1 + y_1 &= 2\omega_1\cos(\tau) + \cos(\tau) - \cos(\tau) + \cos^3(\tau) \\
+    \ddot{y}_1 + y_1 &= 2\omega_1\cos(\tau) + \cos^3(\tau)
+\end{align*}
+We use the trig identity
+$$
+\cos(3\tau) = 4\cos^3(\tau) - 3\cos(\tau) \\
+\implies \cos^3(\tau) = \frac{1}{4}(3\cos(\tau) + \cos(3\tau))
+$$
+so that the above equation becomes
+\begin{align}
+    \ddot{y}_1 + y_1 &= 2\omega_1\cos(\tau) + \frac{1}{4}(3\cos(\tau) + \cos(3\tau)) \nonumber \\
+    \ddot{y}_1 + y_1 &= [2\omega_1 + \frac{3}{4}]\cos(\tau) + \frac{1}{4}\cos(3\tau)
+\end{align}
+Since the $\cos(\tau)$ term is a solution that we already found, and a solution to the homogeneous case of (29), we choose $\omega_1$ such that the $\cos(\tau)$ term is eliminated: $\omega_1 = -\frac{3}{8}$.
+
+Then we can rewrite equation (29) to be 
+\begin{align}
+    \ddot{y}_1 + y_1 = \frac{1}{4}\cos(3\tau), \hspace{0.75cm} \dot{y}_{1}(0) = y_{1}(0) = 0
+\end{align}
+We can solve (30) using the method of undetermined coefficients, first solving for the homogeneous case:
+\begin{align*}
+    \ddot{y}_{1h}(\tau) + y_{1h} = 0
+\end{align*}
+which has a general solution
+\begin{align*}
+   y_{1h}(\tau) =  c_1\cos(\tau) + c_2\sin(\tau)
+\end{align*}
+Then, assuming a particular solution of the form
+$$
+y_{1p}(\tau) = A\cos(3\tau) + B\sin(3\tau)
+$$
+
+whose derivatives are
+\begin{align*}
+\dot{y}_{1p}(\tau) = -3A\sin(3\tau) + 3B\cos(3\tau) \\
+\ddot{y}_{1p}(\tau) = -9A\cos(3\tau) - 9B\sin(3\tau)
+\end{align*}
+Subbing this into (30),
+\begin{align*}
+    -9A\cos(3\tau) - 9B\sin(3\tau) + A\cos(3\tau) + B\sin(3\tau) &= \frac{1}{4}\cos(3\tau) \\
+    \cos(3\tau)[-8A] + \sin(3\tau)[-8B] &= \frac{1}{4}\cos(3\tau)
+\end{align*}
+
+which gives us a system of two equations to solve for our two unknowns $A$ and $B$:
+\begin{align*}
+\begin{cases}
+-8A = \frac{1}{4} \implies A = -\frac{1}{32}\\
+B = 0
+\end{cases}
+\end{align*}
+Thus our particular solution is
+\begin{align*}
+    y_{1p}(\tau) = -\frac{1}{32}\cos(3\tau)
+\end{align*}
+Combining this with our homogeneous solution,
+\begin{align*}
+    y_1(\tau) = c_1\cos(\tau) + c_2\sin(\tau) -\frac{1}{32}\cos(3\tau)
+\end{align*}
+
+and with the initial conditions, we have that $c_1 = \frac{1}{32}$, and $c_2 = 0$. 
+And so our solution to (29) is
+\begin{align*}
+    y_1(\tau) = -\frac{1}{32}(-\cos(\tau) + \cos(3\tau))
+\end{align*}
+So we can finally write another solution to our original ODE (25), using the Poincare method:
+\begin{align}
+    y(\tau) = \cos(\tau) - \frac{\e}{32}(-\cos(\tau) + \cos(3\tau))
+\end{align}
+where 
+\begin{align*}
+    \tau = t - \frac{3}{8}\e t + \dotsb
+\end{align*}
+Also, our solution (31) is bounded since it is made up entirely of bounded functions.
+\pagebreak
+\subsection*{Part (d)}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 20cm]{prob5eps0.1.jpg}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 20cm]{prob5eps0.02.jpg}
+\end{figure}
+
+Clearly the solutions get more accurate with smaller epsilon. As expected, the regular perturbation approximation is unbounded while the Poincare is bounded, and follows the numerical solution much more closely. However, the regular perturbation solution is not bad for smaller values of epsilon.
+\end{document}
